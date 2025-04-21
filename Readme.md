@@ -1,133 +1,187 @@
-# 🚀 Sheetify
+# Sheetify
+**Stylish, configurable SwiftUI sheets — with optional multi‑step flows**
 
-![Swift Package Manager](https://img.shields.io/badge/SwiftPM-Compatible-brightgreen?logo=swift)&nbsp;![iOS 16+](https://img.shields.io/badge/Platform-iOS%2016%2B-orange?logo=apple)&nbsp;![License: MIT](https://img.shields.io/badge/License-MIT-blue)
+![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20macCatalyst-blue) ![Swift](https://img.shields.io/badge/swift-5.7-orange)
 
-> **The ultimate SwiftUI sheet framework**: Present ultra-stylish, animated sheets with headers, blur effects, and drag indicators in a single line of code.
+A powerful SwiftUI package that transforms the built‑in `.sheet` into a polished, interactive _tray_ — complete with custom corners, animations, and even multi‑step wizards. If you love UIKit’s bottom sheets or want to delight your users with modern, fluid modals, _Sheetify_ is for you.
 
 ---
 
-## 🔥 Why Sheetify?
+## 🚀 Features
 
-- **Effortless style**: Gorgeous headers, corner radii, and background effects out of the box.
-- **Flexible layouts**: Multiple detents (half, large, custom fractions) with a tap-to-dismiss or drag indicator.
-- **Animation control**: Customize easing and duration to match your brand’s feel.
-- **Callback hooks**: `onAppear` & `onDismiss` closures for fine‑grained logic.
-- **Super lightweight**: Pure SwiftUI and minimal UIKit for blur; zero dependencies.
+- **Single-shot sheets** with:
+  - Customizable detents (fractional heights)
+  - Adjustable corner radii
+  - Tap‑outside dismissal control
+  - Configurable entry animations and durations
+  - Built‑in header with title and close button
+- **Automatic multi‑step flows** (`.sheetifyFlow`):
+  - Define your steps as a `CaseIterable` enum
+  - Header auto‑titles to current step
+  - Back (X) button navigates to previous step or dismisses
+  - Content‑driven height (shrink‑wrap) — no hard‑coded detents
+  - Smooth transitions and spring animations
 
 ---
 
 ## 📦 Installation
 
-Add to your project via Swift Package Manager:
+**Swift Package Manager**
+
+1. In Xcode, go to **File → Add Packages...**
+2. Enter the repository URL: `https://github.com/youruser/Sheetify.git`
+3. Choose the latest version tag and add the **Sheetify** library.
+
+Or in your `Package.swift`:
 
 ```swift
-// In your Xcode project’s Swift Packages:
-.package(url: "https://github.com/isiguenza/Sheetify.git", from: "1.0.0")
+.package(url: "https://github.com/youruser/Sheetify.git", from: "1.0.0")
 ```
 
-Then import:
-
-```swift
-import Sheetify
-```
+Then add `"Sheetify"` as a dependency for your target.
 
 ---
 
-## 🚀 Quick Start
+## 🎉 Quick Start
+
+Import and apply the modifier anywhere you’d use `.sheet`:
 
 ```swift
-struct ContentView: View {
-  @State private var showModal = false
+import Sheetify
 
+struct MyView: View {
+  @State private var showModal = false
   var body: some View {
-    Button("Show Sheet") { showModal.toggle() }
-      .sheetify($showModal,
-                title: "Welcome to Sheetify",
-                config: .init(
-                  detents: [.fraction(0.4), .large],
-                  backgroundStyle: .blur(radius: 20),
-                  showDragIndicator: true,
-                  animation: .spring(response: 0.4, dampingFraction: 0.8)
-                )) {
-      VStack {
-        Text("🎉 Hello, SwiftUI!")
-          .font(.headline)
-        Spacer()
-        Button("Close") { showModal = false }
+    Button("Open Sheet") { showModal.toggle() }
+      .sheetify($showModal, title: "Hello Sheet") {
+        Text("Hello, Sheetify!")
+          .padding()
       }
-      .padding()
-    }
   }
 }
 ```
 
----
-
-## ✨ Features
-
-| Feature                      | Description
-| ---------------------------- | --------------------------------------------------
-| Multiple Detents             | Customize any number of sheet heights (`.medium`, `.large`, `.fraction(0.7)`)
-| Background Styles            | `clear`, `dim(opacity:)`, or `blur(radius:)` blur effects
-| Customizable Corner Radius   | Set your brand’s corner radius for sheets
-| Drag Indicator               | Show/hide the native handle bar
-| Tap-to-Dismiss               | Enable/disable interactive dismiss by tapping outside
-| Animation Control            | Choose any SwiftUI `Animation` for arrival
-| Callbacks                    | `onAppear {}`, `onDismiss {}` hooks for lifecycle events
+That’s it! You get a header, close button, and default detent at 99% screen height.
 
 ---
 
 ## 🔧 Configuration (`TrayConfig`)
 
 ```swift
-/// Full initializer:
-let config = TrayConfig(
-  detents: [.fraction(0.3), .fraction(0.8)],
-  cornerRadius: 20,
-  isInteractiveDismissDisabled: false,
-  backgroundStyle: .dim(opacity: 0.5),
-  showDragIndicator: true,
-  animation: .easeInOut(duration: 0.2),
-  onAppear: { print("Sheet appeared") },
-  onDismiss: { print("Sheet dismissed") }
-)
+public struct TrayConfig {
+  public var maxDetent: PresentationDetent // e.g. .fraction(0.5), .large
+  public var cornerRadius: CGFloat         // sheet corner radius
+  public var isInteractiveDismissDisabled: Bool
+  public var appearanceAnimationDuration: Double
+  // ... plus others (background style, callbacks, drag indicator)
+}
+```
+
+Pass your custom config:
+
+```swift
+.sheetify(
+  $show, title: "Custom",
+  config: TrayConfig(maxDetent: .fraction(0.6), cornerRadius: 24)
+) {
+  // content
+}
 ```
 
 ---
 
-## 📖 Documentation
+## 🧙 Multi‑Step Flows (`.sheetifyFlow`)
 
-Auto-generated DocC:
+When you need a wizard-like sequence, define your steps as a `CaseIterable` enum:
 
-```bash
-open Package.swift; xcodebuild docbuild
+```swift
+enum WizardStep: CaseIterable, Hashable {
+  case intro, details, confirm
+}
 ```
 
-Visit [GitHub Pages](https://youruser.github.io/Sheetify) for interactive docs.
+Then attach:
+
+```swift
+.sheetifyFlow(
+  $showWizard,
+  startStep: .intro
+) { step in
+  switch step.wrappedValue {
+  case .intro:
+    VStack { Text("Welcome!")
+      Button("Next") { step.wrappedValue = .details }
+    }
+  case .details:
+    VStack { Text("Enter details")
+      // ...
+      Button("Next") { step.wrappedValue = .confirm }
+    }
+  case .confirm:
+    VStack { Text("All set!")
+      Button("Finish") { showWizard = false }
+    }
+  }
+}
+```
+
+- **Header** automatically shows “Intro”, “Details”, “Confirm”
+- **Back button** on header steps back; first step X dismisses
+- **Content‑driven height**: each step’s sheet height matches its content
+- **Smooth springs & transitions** out of the box
 
 ---
 
-## 📂 Example App
+## 📖 Examples
 
-Clone the repo and open `Example/SheetifyDemo.xcodeproj` to explore a live demo.
+**Basic**
+```swift
+.sheetify($show, title: "Hello") {
+  Text("Simple content")
+}
+```
+
+**Rounded Corners & Half Height**
+```swift
+.sheetify(
+  $show,
+  title: "Half Sheet",
+  config: TrayConfig(maxDetent: .fraction(0.5), cornerRadius: 20)
+) {
+  Text("Half the screen with 20pt corners")
+}
+```
+
+**3‑Step Wizard**
+```swift
+.sheetifyFlow($showWizard, startStep: .step1) { step in
+  // ... switch/steps as shown above ...
+}
+```
 
 ---
 
-## 🤝 Contributing
+## 💡 Tips & Tricks
 
-1. Fork this repo
-2. Create a feature branch
-3. Open a PR with tests and docs
-4. Celebrate when merged! 🎉
-
----
-
-## 📝 License
-
-Released under MIT License – see [LICENSE](LICENSE) for details.
+- **Shrink-wrap height**: Remove `.presentationDetents` in your config to let the sheet size itself to content
+- **Custom animations**: override `appearanceAnimationDuration` or wrap step changes in `withAnimation(.spring())`
+- **Background styles**: use `TrayConfig`’s `backgroundStyle` to dim or blur
+- **Lifecycle callbacks**: `config.onAppear` and `config.onDismiss` for event handling
 
 ---
 
-*Made with ❤️ for SwiftUI superstars.*
+## ✨ Contributing
 
+1. Fork the repo
+2. Branch from `main`
+3. Create your feature branch
+4. Submit a pull request
+
+We welcome issues, feature requests, and pull requests. Let’s make SwiftUI sheets unforgettable!
+
+---
+
+## 📜 License
+
+[MIT](./LICENSE) © 2025 Iñaki Siguenza
 
