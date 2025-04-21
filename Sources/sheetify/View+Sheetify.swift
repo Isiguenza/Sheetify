@@ -17,6 +17,7 @@ import SwiftUI
 public struct FlowContainer<Step: Hashable & CaseIterable, Content: View>: View {
     @Binding private var isPresented: Bool
     @State private var currentStep: Step
+    @State private var config: TrayConfig = .init(maxDetent: .fraction(0.99))
     private let steps: [Step]
     private let content: (Binding<Step>) -> Content
 
