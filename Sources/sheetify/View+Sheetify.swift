@@ -48,7 +48,7 @@ public extension View {
                 .frame(maxHeight: .infinity, alignment: .bottom)
             }
             .background(RemoveSheetShadow())
-            .presentationDetents(config.detents)
+            .presentationDetents(Set(config.detents))
             .presentationDragIndicator(config.showDragIndicator ? .visible : .hidden)
             .interactiveDismissDisabled(config.isInteractiveDismissDisabled)
             .onAppear {

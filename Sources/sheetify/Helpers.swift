@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import UIKit
+
 
 /// Removes default sheet shadow via UIKit
-fileprivate struct RemoveSheetShadow: UIViewRepresentable {
+struct RemoveSheetShadow: UIViewRepresentable {
     func makeUIView(context: Context) -> UIView {
         let view = UIView(frame: .zero)
         view.backgroundColor = .clear
@@ -23,7 +25,7 @@ fileprivate struct RemoveSheetShadow: UIViewRepresentable {
 }
 
 /// Shape for rounded corners on specific edges
-fileprivate struct RoundedCorner: Shape {
+struct RoundedCorner: Shape {
     var radius: CGFloat
     var corners: UIRectCorner
 
@@ -49,7 +51,7 @@ extension UIView {
 }
 
 /// UIKit wrapper for UIBlurEffect in SwiftUI
-fileprivate struct VisualEffectView: UIViewRepresentable {
+struct VisualEffectView: UIViewRepresentable {
     let effect: UIVisualEffect?
     func makeUIView(context: Context) -> UIVisualEffectView {
         UIVisualEffectView(effect: effect)

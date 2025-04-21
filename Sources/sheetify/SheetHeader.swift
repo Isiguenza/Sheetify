@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Header view with title and close button
-fileprivate struct SheetHeader: View {
+struct SheetHeader: View {
     /// Sheet title text
     let title: String
     /// Close action

@@ -27,7 +27,7 @@ public struct TrayConfig {
     public var onDismiss: (() -> Void)? = nil
 
     /// Background overlay styles
-    public enum BackgroundStyle {
+    public enum BackgroundStyle: Equatable {
         /// No overlay
         case clear
         /// Semi-transparent dimmed overlay
