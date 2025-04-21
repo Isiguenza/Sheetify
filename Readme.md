@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Assets/SheetifyLogo.png" alt="Sheetify Logo" width="1024"/>
+  <img src="Assets/SheetifyLogo.png" alt="Sheetify Logo" width="520"/>
 </p>
 
 # Sheetify
