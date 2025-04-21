@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="Assets/SheetifyLogo.png" alt="Sheetify Logo" width="120"/>
+</p>
+
 # Sheetify
 **Stylish, configurable SwiftUI sheets — with optional multi‑step flows**
 
@@ -29,13 +33,13 @@ A powerful SwiftUI package that transforms the built‑in `.sheet` into a polish
 **Swift Package Manager**
 
 1. In Xcode, go to **File → Add Packages...**
-2. Enter the repository URL: `https://github.com/isiguenza/Sheetify.git`
+2. Enter the repository URL: `https://github.com/youruser/Sheetify.git`
 3. Choose the latest version tag and add the **Sheetify** library.
 
 Or in your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/isiguenza/Sheetify.git", from: "1.0.0")
+.package(url: "https://github.com/youruser/Sheetify.git", from: "1.0.0")
 ```
 
 Then add `"Sheetify"` as a dependency for your target.
@@ -183,5 +187,5 @@ We welcome issues, feature requests, and pull requests. Let’s make SwiftUI she
 
 ## 📜 License
 
-[MIT](./LICENSE) © 2025 Iñaki Siguenza
+[MIT](./LICENSE) © 2025 Your Name
 
