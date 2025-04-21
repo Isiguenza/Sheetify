@@ -11,7 +11,7 @@ import SwiftUI
 struct SheetifyDemoApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentViewSimple()
+            ContentView()
         }
     }
 }
