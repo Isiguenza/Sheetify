@@ -187,5 +187,5 @@ We welcome issues, feature requests, and pull requests. Let’s make SwiftUI she
 
 ## 📜 License
 
-[MIT](./LICENSE) © 2025 Your Name
+[MIT](./LICENSE) © 2025 Iñaki Siguenza
 
